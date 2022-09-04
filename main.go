@@ -2,7 +2,6 @@ package main
 
 import (
 	"flag"
-	"gosafe/filemd5"
 	"gosafe/history"
 	"gosafe/info"
 	"gosafe/server"
@@ -22,8 +21,6 @@ func main() {
 		tail.Run()
 	case "history":
 		history.Run()
-	case "MD5":
-		filemd5.Run()
 	case "info":
 		info.Run()
 	}
