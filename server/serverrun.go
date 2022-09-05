@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
-	"github.com/360EntSecGroup-Skylar/excelize"
 	"github.com/gin-gonic/gin"
 	"log"
 	"math"
@@ -33,7 +32,6 @@ type Warn struct {
 
 func Run() {
 	flag.Parse()
-	createxml() //运行时创建写入的xlsx文件
 	r := gin.Default()
 	r.Use(CORS())
 	r.GET("/warn", func(c *gin.Context) {
@@ -72,7 +70,7 @@ func Run() {
 			TYPE:  warntype,
 		}
 		//写入execl
-		AppendExecl(strconv.Itoa(execlnumber), data.IP, data.TYPE, data.DATE, data.INFO, data.COUNT)
+		//AppendExecl(strconv.Itoa(execlnumber), data.IP, data.TYPE, data.DATE, data.INFO, data.COUNT)
 		//如果需要开启API则开启此条
 		Warnlist = append(Warnlist, data)
 	})
@@ -94,49 +92,6 @@ func Run() {
 	})
 
 	r.Run(":" + *port)
-}
-
-//报警数据写入到execl
-func AppendExecl(number, WarnIP, WarnType, WarnDate, WarnInfo, WarnCount string) {
-	f, err := excelize.OpenFile("warn.xlsx")
-	if err != nil {
-		log.Println("errrrrr")
-		fmt.Println(err)
-		return
-	}
-	//写入接口数据
-	intnumber, _ := strconv.Atoi(number)
-	f.SetCellValue("Sheet1", "A"+number, intnumber-1)
-	f.SetCellValue("Sheet1", "B"+number, WarnIP)
-	f.SetCellValue("Sheet1", "C"+number, WarnType)
-	f.SetCellValue("Sheet1", "D"+number, WarnDate)
-	f.SetCellValue("Sheet1", "E"+number, WarnCount)
-	f.SetCellValue("Sheet1", "F"+number, WarnInfo)
-	//保存
-	if err = f.Save(); err != nil {
-		fmt.Println(err)
-	}
-
-}
-
-//先通过excelize库创建一个手动创建的会报错
-func createxml() {
-	f := excelize.NewFile()
-	//设置列宽度，A为序号调小一点
-	f.SetColWidth("Sheet1", "A", "B", 5)
-	f.SetColWidth("Sheet1", "B", "E", 15)
-	f.SetColWidth("Sheet1", "F", "F", 150)
-	index := f.NewSheet("Sheet1")
-	f.SetCellValue("Sheet1", "A1", "序号")
-	f.SetCellValue("Sheet1", "B1", "异常IP")
-	f.SetCellValue("Sheet1", "C1", "异常类型")
-	f.SetCellValue("Sheet1", "D1", "记录时间")
-	f.SetCellValue("Sheet1", "E1", "异常IP报警次数")
-	f.SetCellValue("Sheet1", "F1", "异常内容")
-	f.SetActiveSheet(index)
-	if err := f.SaveAs("warn.xlsx"); err != nil {
-		fmt.Println(err)
-	}
 }
 
 //切片分页

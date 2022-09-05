@@ -9,7 +9,7 @@ import (
 )
 
 var (
-	run = flag.String("run", "server", "此参数启动模式:history、server、tail、info、MD5")
+	run = flag.String("run", "server", "此参数启动模式:history、server、tail、info")
 )
 
 func main() {
@@ -22,7 +22,6 @@ func main() {
 	case "history":
 		history.Run()
 	case "info":
-		info.Run()
+		info.Runxlsx()
 	}
-
 }
