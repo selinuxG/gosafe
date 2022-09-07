@@ -29,6 +29,7 @@ type Warn struct {
 func Runxlsx() {
 	flag.Parse()
 	createxml()
+	log.Println("正在请求接口...请求时间完全取决于接口数据...")
 	start := time.Now() // 获取当前时间
 	resp, err := http.Get(*apiserver)
 	if err != nil {

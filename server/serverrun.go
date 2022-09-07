@@ -69,8 +69,6 @@ func Run() {
 			DATE:  now.Format("2006/1/02 15:04"),
 			TYPE:  warntype,
 		}
-		//写入execl
-		//AppendExecl(strconv.Itoa(execlnumber), data.IP, data.TYPE, data.DATE, data.INFO, data.COUNT)
 		//如果需要开启API则开启此条
 		Warnlist = append(Warnlist, data)
 	})
