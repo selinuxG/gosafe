@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"gosafe/client"
 	"gosafe/history"
 	"gosafe/info"
 	"gosafe/server"
@@ -23,5 +24,7 @@ func main() {
 		history.Run()
 	case "info":
 		info.Runxlsx()
+	case "client":
+		client.Runcli()
 	}
 }

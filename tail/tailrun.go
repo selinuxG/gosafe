@@ -22,10 +22,10 @@ var (
 
 func Run() {
 	flag.Parse()
-	paths := strings.Split(*path, ",") //基于“,“分隔,长度为1=监测单个
+	paths := strings.Split(*path, ",") //基于“,“分隔,长度为1=监测单个。
 	if len(paths) == 1 {
 		switch {
-		case Dirs(*path) == true: //如果返回true说明是目录，则递归生成的目录的切片并发交给Tail模式处理是
+		case Dirs(*path) == true: //如果返回true说明是目录，则递归生成的目录的切片并发交给Tail模式处理。
 			wg.Add(2)
 			for _, v := range dirfiles {
 				go Tailfile(v)
@@ -33,7 +33,7 @@ func Run() {
 		case Dirs(*path) == false:
 			Tailfile(*path)
 		}
-	} else { //执行到这就说明不是一个文件，则循环切片验证是否目录交给Tail模式处理
+	} else { //执行到这就说明不是一个文件，则循环切片验证是否目录交给Tail模式处理。
 		wg.Add(len(paths)) //开启线程
 		for i := 0; i < len(paths); i++ {
 			path := paths[i]
@@ -47,7 +47,7 @@ func Run() {
 			}
 		}
 	}
-	wg.Wait() //等待线程结束，否则主线程就直接结束程序退出。
+	wg.Wait() //等待线程结束，防止主线程直接结束退出。
 }
 
 func Tailfile(file string) {
@@ -66,7 +66,7 @@ func Tailfile(file string) {
 		//line.Text = strings.Split(line.Text, "\r")[0] //widnos下换行符包含/r
 		line.Text = strings.Replace(line.Text, "\r", "", -1)
 		line.Text = strings.Split(line.Text, "\n")[0]
-		line.Text = strings.Replace(line.Text, ";", "", -1)    //有空格的数据传参测试有问题需转换
+		line.Text = strings.Replace(line.Text, ";", "", -1)    //有;的数据传参测试有问题需转换
 		line.Text = strings.Replace(line.Text, " ", `%20`, -1) //有空格的数据传参测试有问题需转换
 		url := *serverip + "/warn?"
 		url = fmt.Sprintf("%s&path=%s&text=%s", url, file, line.Text) //拼接url
