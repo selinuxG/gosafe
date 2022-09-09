@@ -93,8 +93,8 @@ func Runxlsx() {
 	}
 
 	elapsed := time.Since(start)
-	log.Printf("该功能函数执行完成耗时%v %s", elapsed, emo[rand.Intn(len(emo))])
-
+	log.Printf("共计写入总数为:%d %s", elapsed, ii, emo[rand.Intn(len(emo))])
+	log.Printf("该功能函数执行完成耗时%v", elapsed)
 }
 
 func apicount(url string) int {
